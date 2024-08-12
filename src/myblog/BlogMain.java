@@ -1,14 +1,19 @@
 package myblog;
 
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BlogMain {
-	public static User AuthorId;
+	private static User AuthorId;
+	private static final Scanner scanner = new Scanner(System.in);
+	private static final PostList postList = new PostList();
 
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
+//		Scanner scanner = new Scanner(System.in);
 		UserList userList = new UserList();
-		PostList postList = new PostList();
+//		PostList postList = new PostList();
 		
 		while (true) {
 			System.out.println("=== My Blog ===");
@@ -16,9 +21,15 @@ public class BlogMain {
 			System.out.println("2.회원가입");
 			System.out.println("3.프로그램 종료");
 			System.out.print("선택 : ");
-	
-			int choice = scanner.nextInt();
-			scanner.nextLine();
+
+			int choice = 0;
+			try {
+				choice = scanner.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("잘못된 입력입니다. 숫자를 입력해야 합니다.");
+			} finally {
+				scanner.nextLine();  // 버퍼를 비워 다음 입력을 받을 준비를 함
+			}
 			
 			switch (choice) {
 				case 1:
@@ -55,8 +66,8 @@ public class BlogMain {
 	
 	
 	public static void content() {
-		Scanner scanner = new Scanner(System.in);
-		PostList postList = new PostList();
+//		Scanner scanner = new Scanner(System.in);
+//		PostList postList = new PostList();
 		
 		while (true) {
 			System.out.println("=== 게시판 ===");
@@ -65,9 +76,15 @@ public class BlogMain {
 			System.out.println("3.게시글 삭제");
 			System.out.println("4.프로그램 종료");
 			System.out.print("선택 : ");
-	
-			int choice = scanner.nextInt();
-			scanner.nextLine();
+
+			int choice = 0;
+			try {
+				choice = scanner.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("잘못된 입력입니다. 숫자를 입력해야 합니다.");
+			} finally {
+				scanner.nextLine();  // 버퍼를 비워 다음 입력을 받을 준비를 함
+			}
 			
 			switch (choice) {
 				case 1:
@@ -81,16 +98,13 @@ public class BlogMain {
 				case 2:
 					System.out.println("<< 게시글 조회 >>");
 					postList.displayContent();
-					System.out.print("게시글 번호 (0:취소):");
+					System.out.print("게시글 번호선택(댓글작성) (0:취소):");
 					int selectNum = scanner.nextInt();
 					if (selectNum == 0) {
 						break;
 					} else {
-						comment(selectNum);
+						comment(selectNum - 1);
 					}
-//					System.out.print("게시글 번호:");
-//					int selectNum = scanner.nextInt();
-//					postList.removeContent(selectNum - 1);
 					break;
 				case 3:
 					System.out.println("<< 게시글 삭제 >>");
@@ -109,27 +123,34 @@ public class BlogMain {
 	}
 	
 	public static void comment(int selectNum) {
-		Scanner scanner = new Scanner(System.in);
-		PostList postList = new PostList();
-		
-		while (true) {
-			System.out.println("1.댓글 달기");
-			System.out.println("2.뒤로가기");
-			System.out.print("선택 : ");
-	
-			int choice = scanner.nextInt();
-			scanner.nextLine();
-			
-			switch (choice) {
-				case 1:
-					System.out.print("댓글내용:");
-					String comment = scanner.nextLine();
-					postList.addComment(selectNum, comment, AuthorId);
-					break;
-				case 2:
-					break;
-			}
-		}
+		boolean commentChk = true;
+
+		while (commentChk) {
+            postList.displayComment(selectNum);
+            System.out.println("1.댓글 달기");
+            System.out.println("2.뒤로가기");
+            System.out.print("선택 : ");
+
+            int choice = 0;
+            try {
+                choice = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("잘못된 입력입니다. 숫자를 입력해야 합니다.");
+            } finally {
+                scanner.nextLine();  // 버퍼를 비워 다음 입력을 받을 준비를 함
+            }
+
+            switch (choice) {
+                case 1:
+                    System.out.print("댓글내용:");
+                    String comment = scanner.nextLine();
+                    postList.addComment(selectNum, comment, AuthorId);
+                    break;
+                case 2:
+                    commentChk = false;
+                    break;
+            }
+        }
 
 	}
 

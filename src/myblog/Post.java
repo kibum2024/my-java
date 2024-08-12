@@ -1,5 +1,6 @@
 package myblog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
@@ -13,12 +14,7 @@ public class Post {
 		this.title = title;
 		this.content = content;
 		this.author = author;
-		this.comments = null;
-	}
-	
-	public Post(String comment, User author) {
-		this.comment = comment;
-		this.author = author;
+		this.comments = new ArrayList<>();
 	}
 	
 	public String getTitle() {
@@ -33,8 +29,11 @@ public class Post {
 		return author;
 	}
 	
+	public List<Comment> getComments() {
+		return comments;
+	}
+
 	public String getComment() {
 		return comment;
 	}
-
 }

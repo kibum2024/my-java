@@ -42,7 +42,7 @@ public class UserList {
 		} else {
 			User user = new User(paramId, paramName, paramPassword);
 			users.add(user);
-			System.out.println(paramName + "님은 회원가입을 축하드립니다.");
+			System.out.println(paramName + "님 회원가입을 축하드립니다.");
 		}
 	}
 
