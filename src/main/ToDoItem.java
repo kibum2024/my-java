@@ -16,4 +16,14 @@ public class ToDoItem {
 	public boolean getIsDone() {
 		return isDone;
 	}
+	
+	public boolean setIsDone() {
+		this.isDone = true;
+		return isDone;
+	}
+	
+	@Override
+	public String toString() {
+		return (isDone? "[완료] " : "[미완료] ") + task;
+	}
 }
