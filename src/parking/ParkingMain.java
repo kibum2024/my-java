@@ -19,7 +19,7 @@ public class ParkingMain {
 
         while (true) {
             System.out.println("=====================================");
-            System.out.println("= 현재 주차장의 잔여 좌석 : (" + ParkingInfoList.parkingCount() + "/10)  =");
+            System.out.println("=   현재 주차장의 잔여 좌석 : (" + ParkingInfoList.parkingCount() + "/10)  =");
             System.out.println("=====================================");
             System.out.println("원하는 작업을 선택하세요.");
             System.out.println("1. 입차");
@@ -49,7 +49,7 @@ public class ParkingMain {
                     ParkingInfoList.displayParking();
                     break;
                 case 4:
-                    System.out.println("차량종류를 입력하세요.(승용차:s, 트럭:t, 버스:b)");
+                    ParkingInfoList.displayParkingAmt();
                     break;
                 case 5:
                     System.out.println("프로그램을 종료합니다.");
@@ -111,9 +111,8 @@ public class ParkingMain {
     }
 
     public static void parkingOut() {
-        System.out.println("출차 차량번호를 입력하세요.");
-        carNumber = scanner.nextLine();
-        System.out.println("출차일시를 입력하세요.(현재일시는:1 입력하세요.)");
+        carNumberInput("out");
+        System.out.println("출차일시를 입력하세요.(년월일시분(예:202408131305), 현재일시는:1 입력하세요.)");
         String checkTime = scanner.nextLine();
         packingOutTime = "";
         if (checkTime.trim().equals("1")) {
@@ -123,14 +122,11 @@ public class ParkingMain {
         } else {
             packingOutTime = checkTime;
         }
-        System.out.println("출차일시 : " + packingOutTime.substring(0,4) + '-' + packingOutTime.substring(4,6) + '-' + packingOutTime.substring(6,8)
-                + ' ' + packingOutTime.substring(8,10) + ':' + packingOutTime.substring(10,12));
         ParkingInfoList.parkingOutInfo(carNumber, packingOutTime);
     }
 
     public static void parkingInfoAppend() {
-        System.out.println("차량번호를 입력하세요.");
-        carNumber = scanner.nextLine();
+        carNumberInput("in");
         System.out.println("입차일시를 입력하세요.(현재일시는:1 입력하세요.)");
         String checkTime = scanner.nextLine();
         packingInTime = "";
@@ -144,6 +140,25 @@ public class ParkingMain {
         System.out.println("입차일시 : " + packingInTime.substring(0,4) + '-' + packingInTime.substring(4,6) + '-' + packingInTime.substring(6,8)
                 + ' ' + packingInTime.substring(8,10) + ':' + packingInTime.substring(10,12));
         ParkingInfoList.addParkingInfo(vehicleKind, energyKind, sizeKind, carNumber, packingInTime);
+    }
+
+    public static void carNumberInput(String inOutChk) {
+        boolean inputChk = true;
+
+        while (inputChk) {
+            if (inOutChk.equals("in")) {
+                System.out.println("차량번호를 입력하세요.");
+            } else {
+                System.out.println("출차 차량번호를 입력하세요.");
+            }
+            carNumber = scanner.nextLine();
+
+            if (carNumber.length() == 4) {
+                inputChk = false;
+            } else {
+                System.out.println("숫자 4자리를 입력하세요.");
+            }
+        }
     }
 }
 

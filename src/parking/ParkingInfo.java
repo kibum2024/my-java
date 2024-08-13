@@ -7,9 +7,10 @@ public class ParkingInfo {
     private final String carNumber;
     private final String parkingInTime;
     private String parkingOutTime;
-    private final int parkingAmt;
+    private int parkingAmt;
+    private int energyAmt;
 
-    public ParkingInfo(String vKind, String energyKind, int sizeKind, String carNumber, String parkingInTime, String parkingOutTime, int parkingAmt) {
+    public ParkingInfo(String vKind, String energyKind, int sizeKind, String carNumber, String parkingInTime, String parkingOutTime, int parkingAmt, int energyAmt) {
         this.vKind = vKind;
         this.energyKind = energyKind;
         this.sizeKind = sizeKind;
@@ -17,6 +18,7 @@ public class ParkingInfo {
         this.parkingInTime = parkingInTime;
         this.parkingOutTime = parkingOutTime;
         this.parkingAmt = parkingAmt;
+        this.energyAmt = energyAmt;
     }
 
 //    public ParkingInfo(String vKind, String energyKind, int sizeKind, String carNumber, String parkingInTime) {
@@ -57,8 +59,19 @@ public class ParkingInfo {
         this.parkingOutTime = parkingOutTime;
     }
 
-
     public int getParkingAmt() {
         return parkingAmt;
+    }
+
+    public void setParkingAmt(int parkingAmt) {
+        this.parkingAmt = parkingAmt;
+    }
+
+    public int getEnergyAmt() {
+        return energyAmt;
+    }
+
+    public void setEnergyAmt(int energyAmt) {
+        this.energyAmt = energyAmt;
     }
 }
