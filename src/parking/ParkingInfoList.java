@@ -176,4 +176,9 @@ public class ParkingInfoList {
                 .filter(parkingInfo -> parkingInfo.getParkingOutTime().isEmpty())
                 .count();
     }
+
+    public static boolean parkingInCheck(String carNumber) {
+        return  parkingInfos.stream()
+                .anyMatch(parkingInfo -> parkingInfo.getCarNumber().equals(carNumber));
+    }
 }

@@ -112,31 +112,13 @@ public class ParkingMain {
 
     public static void parkingOut() {
         carNumberInput("out");
-        System.out.println("출차일시를 입력하세요.(년월일시분(예:202408131305), 현재일시는:1 입력하세요.)");
-        String checkTime = scanner.nextLine();
-        packingOutTime = "";
-        if (checkTime.trim().equals("1")) {
-            LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-            packingOutTime = now.format(formatter);
-        } else {
-            packingOutTime = checkTime;
-        }
+        packingTimeInput("out");
         ParkingInfoList.parkingOutInfo(carNumber, packingOutTime);
     }
 
     public static void parkingInfoAppend() {
         carNumberInput("in");
-        System.out.println("입차일시를 입력하세요.(현재일시는:1 입력하세요.)");
-        String checkTime = scanner.nextLine();
-        packingInTime = "";
-        if (checkTime.trim().equals("1")) {
-            LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-            packingInTime = now.format(formatter);
-        } else {
-            packingInTime = checkTime;
-        }
+        packingTimeInput("in");
         System.out.println("입차일시 : " + packingInTime.substring(0,4) + '-' + packingInTime.substring(4,6) + '-' + packingInTime.substring(6,8)
                 + ' ' + packingInTime.substring(8,10) + ':' + packingInTime.substring(10,12));
         ParkingInfoList.addParkingInfo(vehicleKind, energyKind, sizeKind, carNumber, packingInTime);
@@ -152,13 +134,70 @@ public class ParkingMain {
                 System.out.println("출차 차량번호를 입력하세요.");
             }
             carNumber = scanner.nextLine();
-
-            if (carNumber.length() == 4) {
-                inputChk = false;
+            boolean isNumeric = carNumber.matches("[0-9]+");
+            if (carNumber.length() == 4 && isNumeric) {
+                if (inOutChk.equals("out")) {
+                    if (ParkingInfoList.parkingInCheck(carNumber)) {
+                        inputChk = false;
+                    } else {
+                        System.out.println("입차한 차량번호가 아닙니다. 차량번호를 확인하세요.");
+                    }
+                } else {
+                    inputChk = false;
+                }
             } else {
-                System.out.println("숫자 4자리를 입력하세요.");
+                if (!isNumeric) {
+                    System.out.println("숫자가 아닌 문자가 포함되어 있습니다. 숫자만 입력하세요.");
+                } else {
+                    System.out.println("숫자 4자리를 입력하세요.");
+                }
             }
         }
     }
+
+    public static void packingTimeInput(String inOutChk) {
+        boolean inputChk = true;
+        String checkTime = "";
+
+        while (inputChk) {
+            if (inOutChk.equals("in")) {
+                System.out.println("입차일시를 입력하세요.(년월일시분(예:202408131305), 현재일시는:1 입력하세요.)");
+            } else {
+                System.out.println("출차일시를 입력하세요.(년월일시분(예:202408131305), 현재일시는:1 입력하세요.)");
+            }
+
+            checkTime = scanner.nextLine();
+            boolean isNumeric = checkTime.matches("[0-9]+");
+            if (checkTime.length() == 12 && isNumeric || checkTime.equals("1")) {
+                if (inOutChk.equals("in")) {
+                    packingInTime = "";
+                    if (checkTime.trim().equals("1")) {
+                        LocalDateTime now = LocalDateTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+                        packingInTime = now.format(formatter);
+                    } else {
+                        packingInTime = checkTime;
+                    }
+                } else {
+                    packingOutTime = "";
+                    if (checkTime.trim().equals("1")) {
+                        LocalDateTime now = LocalDateTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+                        packingOutTime = now.format(formatter);
+                    } else {
+                        packingOutTime = checkTime;
+                    }
+                }
+                inputChk = false;
+            } else {
+                if (!isNumeric) {
+                    System.out.println("숫자가 아닌 문자가 포함되어 있습니다. 숫자만 입력하세요.");
+                } else {
+                    System.out.println("년월일시분(예:202408131305) 숫자 12자리를 입력하세요.");
+                }
+            }
+        }
+    }
+
 }
 
